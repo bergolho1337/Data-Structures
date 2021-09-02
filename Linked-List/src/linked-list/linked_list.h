@@ -45,4 +45,39 @@ public:
     void print ();
 };
 
+template<class T>
+class DLLNode
+{
+private:
+    uint32_t id;
+    T value;
+    DLLNode *next, *prev;
+public:
+    DLLNode (const uint32_t id, const T &value, DLLNode *next = nullptr, DLLNode *prev = nullptr);
+    ~DLLNode ();
+    inline uint32_t get_id () { return this->id; }
+    inline T get_value () { return this->value; }
+    inline DLLNode* get_next () { return this->next; }
+    inline DLLNode* get_prev () { return this->prev; }
+    inline void set_id (const uint32_t id) { this->id = id; }
+    inline void set_value (const T value) { this->value = value; }
+    inline void set_next (DLLNode *next) { this->next = next; }
+    inline void set_prev (DLLNode *prev) { this->prev = prev; }
+    void print ();
+};
+
+template<class T>
+class DoublyLinkedList
+{
+private:
+    uint32_t num_nodes;
+    DLLNode<T> *head;
+    DLLNode<T> *tail;
+public:
+    DoublyLinkedList ();
+    ~DoublyLinkedList ();
+    void insert_to_tail (const T&);
+    void print ();
+};
+
 #endif

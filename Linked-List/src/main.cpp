@@ -30,5 +30,8 @@ int main (int argc, char *argv[])
 
 	delete l1;
 
+
+	DoublyLinkedList<double> l2();
+
 	return 0;
 }

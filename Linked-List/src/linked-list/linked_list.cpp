@@ -175,3 +175,66 @@ bool LinkedList::is_empty ()
 {
     return (this->num_nodes == 0) ? true : false;
 }
+
+template<class T>
+DLLNode<T>::DLLNode (const uint32_t id, const T &value, DLLNode *next, DLLNode *prev)
+{
+    this->id = id;
+    this->value = value;
+    this->next = next;
+    this->prev = prev;
+}
+
+template<class T>
+DLLNode<T>::~DLLNode ()
+{
+    this->next = nullptr;
+    this->prev = nullptr;
+}
+
+template<class T>
+void DLLNode<T>::print ()
+{
+    printf("|| %u [%g] ||", this->id, this->value);
+}
+
+template<class T>
+DoublyLinkedList<T>::DoublyLinkedList ()
+{
+    this->num_nodes = 0;
+    this->head = this->tail = nullptr;
+}
+
+template<class T>
+DoublyLinkedList<T>::~DoublyLinkedList ()
+{
+
+}
+
+template<class T>
+void DoublyLinkedList<T>::insert_to_tail (const T &value)
+{
+    uint32_t num_nodes = this->num_nodes;
+    if (this->tail)
+    {
+        this->tail = new DLLNode<T>(num_nodes,value,nullptr,this->tail);
+        this->tail->get_prev()->set_next(this->tail);
+    }
+    else
+    {
+        this->head = this->tail = new DLLNode<T>(num_nodes,value);
+    }
+}
+
+template<class T>
+void DoublyLinkedList<T>::print ()
+{
+    DLLNode<T> *tmp = this->head;
+    while (tmp != NULL)
+    {
+        tmp->print();
+        printf(" --> ");
+        tmp = tmp->get_next();
+    }
+    printf("\n");
+}
