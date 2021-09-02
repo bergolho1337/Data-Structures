@@ -1,15 +1,15 @@
 #include "linked_list.h"
 
-Node::Node (const uint32_t id, const double value)
+Node::Node (const uint32_t id, const double value, Node *next)
 {
     this->id = id;
     this->value = value;
-    this->next = NULL;
+    this->next = next;
 }
 
 Node::~Node ()
 {
-    this->next = NULL;
+    this->next = nullptr;
 }
 
 void Node::print ()
@@ -20,45 +20,42 @@ void Node::print ()
 LinkedList::LinkedList ()
 {
     this->num_nodes = 0;
-    this->head = NULL;
-    this->tail = NULL;
-}
-
-LinkedList::LinkedList (const char filename[])
-{
-
+    this->head = nullptr;
+    this->tail = nullptr;
 }
 
 LinkedList::~LinkedList ()
 {
-    Node *tmp = NULL;
     while (!is_empty())
     {
-        tmp = this->head;
-        delete_element(tmp->get_value());
+        delete_from_head();
     }
 }
 
-Node* LinkedList::insert_element (const double value)
+Node* LinkedList::insert_to_head (const double value)
 {
-    uint32_t cur_num_nodes = this->num_nodes;
-    Node *n = new Node(cur_num_nodes,value);
-
-    // CASE 1) List is empty
+    uint32_t num_nodes = this->num_nodes;
+    this->head = new Node(num_nodes,value,this->head);
     if (!this->tail)
+        this->tail = this->head;
+    this->num_nodes++;
+    return this->head;
+}
+
+Node* LinkedList::insert_to_tail (const double value)
+{
+    uint32_t num_nodes = this->num_nodes;
+    if (this->tail)
     {
-        this->head = n;
-        this->tail = n;
-        this->num_nodes++;
+        this->tail->set_next(new Node(num_nodes,value));
+        this->tail = this->tail->get_next();
     }
-    // CASE 2) Insert at the last element
     else
     {
-        this->tail->set_next(n);
-        this->tail = n;
-        this->num_nodes++;
+        this->head = this->tail = new Node(num_nodes,value);
     }
-    return n;
+    this->num_nodes++;
+    return this->tail;
 }
 
 Node* LinkedList::search_element (const double value)
@@ -69,10 +66,62 @@ Node* LinkedList::search_element (const double value)
         if (tmp->get_value() == value) return tmp;
         tmp = tmp->get_next();
     }
-    return NULL;
+    return nullptr;
 }
 
-bool LinkedList::delete_element (const double value)
+double LinkedList::delete_from_head ()
+{
+    if (this->head)
+    {
+        double result = this->head->get_value();
+        Node *tmp = this->head;
+        if (this->head == this->tail)
+            this->head = this->tail = nullptr;
+        else
+            this->head = this->head->get_next();
+        delete tmp;
+        this->num_nodes--;
+        return result;
+    }
+    else
+    {
+        fprintf(stderr,"[-] ERROR! From 'delete_from_head'! The list is empty!\n");
+        return 0;
+    }
+}
+
+double LinkedList::delete_from_tail ()
+{
+    if (this->tail)
+    {
+        double result = this->tail->get_value();
+        if (this->head == this->tail)
+        {
+            delete this->tail;
+            this->head = this->tail = nullptr;
+        }
+        else
+        {
+            Node *tmp2 = this->head;
+            while (tmp2->get_next() != this->tail)
+            {
+                tmp2 = tmp2->get_next();
+            }
+            delete this->tail;
+            this->tail = tmp2;
+            this->tail->set_next(nullptr);
+        }
+        this->num_nodes--;
+        return result;
+    }
+    else
+    {
+        fprintf(stderr,"[-] ERROR! From 'delete_from_tail'! The list is empty!\n");
+        return 0;
+    }
+}
+
+bool LinkedList::delete_node (const double value)
 {
     Node *tmp = this->head;
     Node *tmp2 = tmp;
@@ -102,7 +151,7 @@ bool LinkedList::delete_element (const double value)
     // Element not found
     else
     {
-        fprintf(stderr,"[-] ERROR! Value '%g' was not found in the list!\n",value);
+        fprintf(stderr,"[-] ERROR! From 'delete_from_node'! Value '%g' was not found in the list!\n",value);
         return false;
     }
 }

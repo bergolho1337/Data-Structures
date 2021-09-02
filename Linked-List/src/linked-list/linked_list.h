@@ -14,7 +14,7 @@ private:
     double value;
     Node *next;
 public:
-    Node (const uint32_t id, const double value);
+    Node (const uint32_t id, const double value, Node *next = nullptr);
     ~Node ();
     inline uint32_t get_id () { return this->id; }
     inline double get_value () { return this->value; }
@@ -33,12 +33,14 @@ private:
     Node *tail;
 public:
     LinkedList ();
-    LinkedList (const char filename[]);
     ~LinkedList ();
     inline uint32_t get_num_nodes () { return this->num_nodes; }
-    Node* insert_element (const double value);
+    Node* insert_to_head (const double value);
+    Node* insert_to_tail (const double value);
     Node* search_element (const double value);
-    bool delete_element (const double value);
+    double delete_from_head ();
+    double delete_from_tail ();
+    bool delete_node (const double value);
     bool is_empty ();
     void print ();
 };

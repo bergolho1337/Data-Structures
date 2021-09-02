@@ -5,7 +5,7 @@ UNIT (LinkedList_Insert){
 	const uint32_t num_insertions = 1000;
 	LinkedList *l = new LinkedList();
 	for (uint32_t i = 0; i < num_insertions; i++)
-		l->insert_element(i);
+		l->insert_to_tail(i);
 	uint32_t num_nodes = l->get_num_nodes();
 	delete l;
 
@@ -14,11 +14,11 @@ UNIT (LinkedList_Insert){
 
 UNIT (LinkedList_Search){
 	LinkedList *l = new LinkedList();
-	l->insert_element(5);
-	l->insert_element(8);
-	l->insert_element(2);
-	l->insert_element(7);
-	l->insert_element(1);
+	l->insert_to_tail(5);
+	l->insert_to_tail(8);
+	l->insert_to_tail(2);
+	l->insert_to_tail(7);
+	l->insert_to_tail(1);
 	
 	Node *n1 = l->search_element(2);		// Must be found
 	Node *n2 = l->search_element(100);		// Must NOT be found
@@ -31,16 +31,16 @@ UNIT (LinkedList_Search){
 
 UNIT (LinkedList_Delete){
 	LinkedList *l = new LinkedList();
-	l->insert_element(7);
-	l->insert_element(2);
-	l->insert_element(4);
-	l->insert_element(8);
-	l->insert_element(6);
+	l->insert_to_tail(7);
+	l->insert_to_tail(2);
+	l->insert_to_tail(4);
+	l->insert_to_tail(8);
+	l->insert_to_tail(6);
 	
-	bool flag1 = l->delete_element(2);		// Must be found
-	bool flag2 = l->delete_element(100);	// Must NOT be found
-	bool flag3 = l->delete_element(7);		// Must be found
-	bool flag4 = l->delete_element(6);		// Must be found
+	bool flag1 = l->delete_node(2);		// Must be found
+	bool flag2 = l->delete_node(100);	// Must NOT be found
+	bool flag3 = l->delete_node(7);		// Must be found
+	bool flag4 = l->delete_node(6);		// Must be found
 	bool flag = (flag1 && !flag2 && flag3 && flag4 && l->get_num_nodes() == 2) ? true : false;
 	delete l;
 
