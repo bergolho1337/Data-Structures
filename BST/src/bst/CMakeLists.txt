@@ -1,0 +1,7 @@
+set(SOURCE_FILES_BST bst.h bst.cpp)
+
+ADD_LIBRARY(bst STATIC ${SOURCE_FILES_BST})
+
+if(NOT MSVC)
+    set_property(TARGET bst PROPERTY POSITION_INDEPENDENT_CODE ON)
+endif()
